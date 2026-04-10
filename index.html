@@ -277,11 +277,11 @@ button:disabled { cursor: not-allowed; opacity: 0.55; transform: none; }
       </div>
       <div class="r-box note-box">
         <h3>善意提示</h3>
-        <p>本测试纯属娱乐，别拿它当圣旨、面试、相亲、分手或任何人生重大决策书。每个女人都有属于自己的牛鹿方式 ✨</p>
+        <p>本测试纯属娱乐，别拿它当圣旨、面试、相亲、分手或任何人生重大决策书。每个女人都有属于自己的NB方式 ✨</p>
       </div>
     </div>
     <div class="result-actions">
-      <div class="footer-note">未经分享给姐妹，看看她是哪种牛鹿</div>
+      <div class="footer-note">快分享给姐妹，看看她是哪种类型</div>
       <div style="display:flex;gap:12px;flex-wrap:wrap;">
         <button id="restartBtn" class="btn-secondary">重新测试</button>
         <button id="toTopBtn" class="btn-primary">回到首页</button>
@@ -311,24 +311,24 @@ const questions = [
     {text:'先安抚情绪，帮她想想怎么让这段关系更好',score:'S'}
   ]},
   { dim:'NS', label:'主导维度', text:'小组作业整体进度缓慢，你会怎么办？', options:[
-    {text:'立即组织沟通，每个人的任务明确',score:'N'},
-    {text:'奈之不干，他们都不急来我也不急',score:'X'},
-    {text:'做好自己的部分，相信团队最终能奏效',score:'S'}
+    {text:'立即组织沟通，把每个人的任务明确下来',score:'N'},
+    {text:'无所谓，他们不急我也不急',score:'X'},
+    {text:'先把好自己的部分，相信大家最终能完成',score:'S'}
   ]},
   { dim:'NS', label:'主导维度', text:'相恋多年的男/女朋友讨论婚礼仪式，你的风格是：', options:[
-    {text:'从餐厅到座位到节目，全部亲来安排',score:'N'},
-    {text:'全部包办，不要让我操心',score:'X'},
-    {text:'定一个地点，大家来了喝个饭聊一下就行',score:'S'}
+    {text:'从餐厅到座位到节目，全部亲自安排好',score:'N'},
+    {text:'随便，你们看着办就行',score:'X'},
+    {text:'定一个地点，大家来了喝顿饭聊一聊就行',score:'S'}
   ]},
-  { dim:'NS', label:'主导维度', text:'你和朋友一起旅行，到了目的地发现订好酒店房型超售，需要你们更换略差一点的其他房型，你会：', options:[
-    {text:'立即联系投诉+找替代酒店，用程序把它搞定',score:'N'},
-    {text:'算了算了，凑合住一晚上吧',score:'X'},
-    {text:'让大家一起讨论，看怎么办最好',score:'S'}
+  { dim:'NS', label:'主导维度', text:'你和朋友一起旅行，到了目的地发现订好的房型超售，需要更换略差一点的房型，你会：', options:[
+    {text:'立即找前台投诉，要求补偿或换回原房型',score:'N'},
+    {text:'算了算了，凑合住一晚吧',score:'X'},
+    {text:'让大家一起商量，看怎么处理最好',score:'S'}
   ]},
   { dim:'NS', label:'主导维度', text:'公司年会要筹备节目，你的反应是：', options:[
     {text:'主动组织，流程、场地、内容，全部有说有交代',score:'N'},
-    {text:'别cue我，我可以当观众/',score:'X'},
-    {text:'有人组织就参加，随便完成就干就行',score:'S'}
+    {text:'别cue我，我可以当观众',score:'X'},
+    {text:'有人组织就参加，随便出个节目就行',score:'S'}
   ]},
   { dim:'NS', label:'主导维度', text:'你发现了一个很好的创业机会，但需要组建团队，你会：', options:[
     {text:'主动担纲，找人来执行我的想法',score:'N'},
@@ -342,8 +342,8 @@ const questions = [
   ]},
 
   // === 冲突维度：B 牛逼立 vs R 流水立 (7题) ===
-  { dim:'BR', label:'冲突维度', text:'工作中你做了一个项目方案，汇报时有人当会质疑你抄了一下，你会：', options:[
-    {text:'当场用证据演回去，一个字都不让',score:'B'},
+  { dim:'BR', label:'冲突维度', text:'工作中你做了一个项目方案，汇报时有人当众质疑你抄袭，你会：', options:[
+    {text:'当场用证据怼回去，一个字都不让',score:'B'},
     {text:'不管他，继续说自己的',score:'X'},
     {text:'微笑不接话，转头用成绩碾回来',score:'R'}
   ]},
@@ -352,18 +352,18 @@ const questions = [
     {text:'大脑空白不知道怎么办',score:'X'},
     {text:'笑着说「我想想」，后面找真正原因分析',score:'R'}
   ]},
-  { dim:'BR', label:'冲突维度', text:'工作中被很信任、给了很多资源的上属坑，你的处理方式是：', options:[
-    {text:'明确、清算、不必从此出门，干脆利落',score:'B'},
-    {text:'可能什么都要退，表示理解',score:'X'},
-    {text:'不在声色，找机会让他自己来归去',score:'R'}
+  { dim:'BR', label:'冲突维度', text:'工作中被你非常信任、还给了很多资源的上司坑了，你的处理方式是：', options:[
+    {text:'当面对质，就算从此决裂也不在乎',score:'B'},
+    {text:'可能是有什么苦衷，先表示理解',score:'X'},
+    {text:'不动声色，找机会让他自食其果',score:'R'}
   ]},
-  { dim:'BR', label:'冲突维度', text:'有急需的时候有人挡到你前面，你会：', options:[
-    {text:'直接开口：「不好意思，我很急」',score:'B'},
+  { dim:'BR', label:'冲突维度', text:'排队时有人直接加塞插到你前面，你会：', options:[
+    {text:'直接开口：「不好意思，我在排队」',score:'B'},
     {text:'在心里骂两句但不说话',score:'X'},
-    {text:'默默往前一点，用气势让对方自觉',score:'R'}
+    {text:'默默往前站一点，用气势让对方自觉',score:'R'}
   ]},
   { dim:'BR', label:'冲突维度', text:'朋友欠了你的钱一直不还，你会怎么处理？', options:[
-    {text:'直接问：「上次借的钱什么收回？」',score:'B'},
+    {text:'直接问：「上次借的钱什么时候还？」',score:'B'},
     {text:'算了，就当请客了',score:'X'},
     {text:'找一个合适的场合暗示一下，让对方自己想起来',score:'R'}
   ]},
@@ -375,58 +375,58 @@ const questions = [
   { dim:'BR', label:'冲突维度', text:'你觉得自己更像哪种动物：', options:[
     {text:'花豹——看见了就冲，不留后路',score:'B'},
     {text:'乌龟——别来烦我，谢谢',score:'X'},
-    {text:'蛇——安静等待，出手时候才出稳',score:'R'}
+    {text:'蛇——安静等待，出手时必然精准',score:'R'}
   ]},
 
   // === 谋知维度：T 棋盘立 vs Z 赌徒立 (7题) ===
-  { dim:'TZ', label:'谋知维度', text:'面临两个工作机会，一个稳妥低薪来一个高风险高薪来，你：', options:[
+  { dim:'TZ', label:'谋知维度', text:'面临两个工作机会，一个稳妥低薪，一个高风险高薪，你会：', options:[
     {text:'列详细的利弊分析，算清楚后决定',score:'T'},
     {text:'不想自己决定，找老辈帮忙',score:'X'},
     {text:'直觉告诉我喜欢哪个就冲',score:'Z'}
   ]},
-  { dim:'TZ', label:'谋知维度', text:'你在社交场发现一个潜在的商机，你会：', options:[
-    {text:'回去中布局，梳理好关键人物',score:'T'},
-    {text:'很想去，但是也不会主动干啥',score:'X'},
-    {text:'直接碰自我介绍，靠运气搭上说话',score:'Z'}
+  { dim:'TZ', label:'谋知维度', text:'你在一个社交场合发现一个潜在的商机，你会：', options:[
+    {text:'回去后认真布局，先梳理好关键人物',score:'T'},
+    {text:'很感兴趣，但也不会主动干啥',score:'X'},
+    {text:'直接上去自我介绍，运气好就搭上了',score:'Z'}
   ]},
   { dim:'TZ', label:'谋知维度', text:'跟人打牌/麻将的时候，你属于哪种？', options:[
-    {text:'走一步算了步，享受布局的快感',score:'T'},
+    {text:'走一步算三步，享受布局的快感',score:'T'},
     {text:'其实想赢的时候会算，大部分时候比较佛系',score:'X'},
     {text:'跟着感觉走，直觉最重要',score:'Z'}
   ]},
-  { dim:'TZ', label:'谋知维度', text:'你买东西之前会大量看评课吗？', options:[
-    {text:'会，看测评、比价格、列清单，不看评课不下手',score:'T'},
+  { dim:'TZ', label:'谋知维度', text:'你买东西之前会大量看评测吗？', options:[
+    {text:'会，看测评、比价格、列清单，不看评测不下手',score:'T'},
     {text:'看心情，有时候研究有时候不研究',score:'X'},
     {text:'看到喜欢的直接买，人生要快',score:'Z'}
   ]},
   { dim:'TZ', label:'谋知维度', text:'你和朋友发生了误会，你会怎么处理？', options:[
     {text:'想清楚前因后果的逻辑，再找对方谈',score:'T'},
     {text:'等等看吧，也许两天就好了',score:'X'},
-    {text:'管他就去问，想清楚后再说',score:'Z'}
+    {text:'不管那么多，直接去找对方问清楚',score:'Z'}
   ]},
   { dim:'TZ', label:'谋知维度', text:'你更欣赏哪种成功方式？', options:[
     {text:'百年磨一剑，步步为营走到今天',score:'T'},
     {text:'都挺好的，成功就行了',score:'X'},
-    {text:'押了风口上一把梭哈，赢赢了就是传奇',score:'Z'}
+    {text:'押上风口，一把梭哈，赢了就是传奇',score:'Z'}
   ]},
-  { dim:'TZ', label:'谋知维度', text:'你要对一个重大的人生决定，（辞职/搬家/分手），你通常是：', options:[
+  { dim:'TZ', label:'谋知维度', text:'你面临一个重大的人生决定（辞职/搬家/分手），你通常是：', options:[
     {text:'先做好权衡，想好退路再行动',score:'T'},
     {text:'纠结很久，最后可能还是维持现状',score:'X'},
-    {text:'想到就动，横竖就会失败嘛',score:'Z'}
+    {text:'想到就动，横竖不会更差了',score:'Z'}
   ]},
 
   // === 社交维度：I 孤峰立 vs M 汇方立 (7题) ===
   { dim:'IM', label:'社交维度', text:'要安排一件大事，你更倾向于：', options:[
-    {text:'自己在手掌控，别人只会添乱',score:'I'},
-    {text:'看情况吧，简单的自己来，复杂的找人帮忙',score:'X'},
-    {text:'找到对的人组起，一起最好',score:'M'}
+    {text:'自己亲手掌控，别人只会添乱',score:'I'},
+    {text:'看情况，简单的自己来，复杂的找人帮忙',score:'X'},
+    {text:'找到对的人组队，一起做才最好',score:'M'}
   ]},
   { dim:'IM', label:'社交维度', text:'在一个新环境里，你的社交策略是：', options:[
     {text:'保持距离和神秘感，让别人来找我',score:'I'},
     {text:'不主动也不拒绝，顺其自然',score:'X'},
     {text:'主动出去建立关系网，什么时候都是需要的',score:'M'}
   ]},
-  { dim:'IM', label:'社交维度', text:'放假之后，你最想的状态是：', options:[
+  { dim:'IM', label:'社交维度', text:'放假了，你最理想的状态是：', options:[
     {text:'一个人站在山顶，享受孤独的自由',score:'I'},
     {text:'有一些知己就够了，不需要太多人',score:'X'},
     {text:'身边围绕一群活跃的人，一起做更大的事',score:'M'}
@@ -447,7 +447,7 @@ const questions = [
     {text:'「一个人走得快，一群人走得远」',score:'M'}
   ]},
   { dim:'IM', label:'社交维度', text:'你的微信通讯录中，你的态度是：', options:[
-    {text:'定期清清，不见的在里，看不看的都是精选',score:'I'},
+    {text:'定期清理，不常联系的直接删，留下的都是精选',score:'I'},
     {text:'不管也不减，随便就行',score:'X'},
     {text:'越多越好，你永远不知道什么时候用得上谁',score:'M'}
   ]},
