@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NBTI 人格测试 — 女人就是牛鹿</title>
+<title>NBTI 人格测试 — 女人就是牛逼</title>
 <style>
 :root {
   --bg: #fdf6f6;
@@ -18,7 +18,7 @@
   --shadow: 0 16px 40px rgba(140,40,60,0.07);
   --radius: 22px;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body { margin: 0; padding: 0; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
@@ -55,6 +55,7 @@ body {
 .hero-minimal h1 {
   font-size: clamp(32px, 6vw, 56px);
   line-height: 1.1; letter-spacing: -0.03em;
+  color: var(--accent-strong);
   background: linear-gradient(135deg, var(--accent-strong), var(--gold));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -75,8 +76,10 @@ body {
 button {
   border: 0; cursor: pointer; font: inherit;
   transition: transform .16s, box-shadow .16s, opacity .16s;
+  touch-action: manipulation;
 }
 button:hover { transform: translateY(-1px); }
+button:active { transform: translateY(0); }
 button:disabled { cursor: not-allowed; opacity: 0.55; transform: none; }
 .btn-primary {
   background: var(--accent-strong); color: #fff;
@@ -90,6 +93,12 @@ button:disabled { cursor: not-allowed; opacity: 0.55; transform: none; }
   border: 1px solid var(--line); font-weight: 700;
 }
 .hero-actions { display: flex; gap: 12px; margin-top: 28px; justify-content: center; }
+.hero-notes {
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.9;
+}
 
 /* TEST */
 .test-wrap { margin-top: 22px; padding: 22px; }
@@ -130,11 +139,14 @@ button:disabled { cursor: not-allowed; opacity: 0.55; transform: none; }
   padding: 14px; border-radius: 14px;
   border: 1px solid var(--line); background: #fff;
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-user-select: none; user-select: none;
   transition: border-color .16s, background .16s, transform .16s;
 }
 .option:hover { border-color: var(--accent); background: #fef8f9; }
+.option:active { transform: scale(0.99); }
 .option.selected { border-color: var(--accent-strong); background: var(--soft); }
-.option input { accent-color: var(--accent-strong); transform: scale(1.15); flex-shrink: 0; }
+.option input { accent-color: var(--accent-strong); transform: scale(1.15); flex-shrink: 0; pointer-events: none; }
 
 .actions-bottom {
   display: flex; justify-content: space-between; align-items: center;
@@ -145,34 +157,54 @@ button:disabled { cursor: not-allowed; opacity: 0.55; transform: none; }
 /* RESULT */
 .result-wrap { margin-top: 22px; padding: 22px; }
 .result-layout { display: grid; gap: 18px; }
-.result-top {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 18px; align-items: stretch;
-}
 .r-box {
   border: 1px solid var(--line); border-radius: 18px;
   padding: 20px; background: linear-gradient(180deg, #fff, #fffbfb);
 }
 .r-box h3 { font-size: 16px; margin-bottom: 14px; color: var(--text); }
 
-.type-kicker {
-  font-size: 12px; color: var(--accent-strong);
-  margin-bottom: 8px; letter-spacing: .06em; font-weight: 700;
+/* RESULT HERO CARD */
+.r-hero {
+  border: 1px solid var(--line); border-radius: var(--radius);
+  background: linear-gradient(150deg, #f5eeff 0%, #fff0f5 60%, #fff8fb 100%);
+  padding: 36px 28px 32px;
+  text-align: center;
 }
-.type-name {
-  font-size: clamp(28px, 5vw, 44px);
-  line-height: 1.1; letter-spacing: -0.03em; font-weight: 900;
+.r-hero-label {
+  font-size: 14px; color: var(--muted);
+  letter-spacing: 0.05em; margin-bottom: 16px;
 }
-.type-subname { margin-top: 10px; color: var(--muted); font-size: 14px; line-height: 1.8; }
-.match-badge {
-  margin-top: 16px; display: inline-flex; align-items: center; gap: 8px;
-  border-radius: 999px; padding: 10px 14px;
-  background: var(--soft); border: 1px solid var(--line);
-  color: var(--accent-strong); font-weight: 700; font-size: 14px;
+.r-hero-typename {
+  font-size: clamp(56px, 13vw, 88px);
+  font-weight: 900; color: var(--text);
+  line-height: 1.0; letter-spacing: -0.02em;
+  margin-bottom: 10px;
 }
-.type-quote {
-  margin-top: 16px; font-style: italic; color: var(--accent);
-  font-size: 15px; line-height: 1.8;
+.r-hero-code {
+  font-size: clamp(20px, 5vw, 28px);
+  font-weight: 800; color: var(--accent-strong);
+  letter-spacing: 0.18em; margin-bottom: 28px;
+}
+.r-hero-img {
+  width: 240px; height: 240px;
+  margin: 0 auto 28px;
+  display: flex; align-items: center; justify-content: center;
+}
+.r-hero-img img {
+  width: 100%; height: 100%;
+  object-fit: contain; display: block;
+}
+.r-hero-img-placeholder {
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  background: var(--soft);
+  border: 2px dashed var(--line);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted); font-size: 13px;
+}
+.r-hero-quote {
+  font-size: 14px; color: #5a3a48;
+  line-height: 1.85;
 }
 
 .dim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -208,9 +240,23 @@ button:disabled { cursor: not-allowed; opacity: 0.55; transform: none; }
 
 @media (max-width: 860px) { .result-top, .dim-grid { grid-template-columns: 1fr; } }
 @media (max-width: 600px) {
-  .shell { padding: 14px 12px 42px; }
-  .test-wrap, .result-wrap { padding: 16px; }
-  .hero-minimal h1 { font-size: 28px; }
+  .shell { padding: 12px 10px 40px; }
+  .test-wrap, .result-wrap { padding: 14px; }
+  .hero-minimal { padding: 32px 16px; min-height: 40vh; }
+  .hero-minimal h1 { font-size: 26px; }
+  .r-hero { padding: 28px 18px 26px; }
+  .r-hero-img { width: 200px; height: 200px; }
+  .question { padding: 14px; }
+  .option { padding: 12px; gap: 10px; }
+  .btn-primary, .btn-secondary { padding: 13px 18px; font-size: 14px; }
+  .actions-bottom { flex-direction: column; align-items: stretch; }
+  .actions-bottom > div { display: flex; flex-direction: column; gap: 10px; }
+  .actions-bottom .btn-primary,
+  .actions-bottom .btn-secondary { width: 100%; text-align: center; }
+  .result-actions { flex-direction: column; align-items: stretch; }
+  .result-actions > div { display: flex; flex-direction: column; gap: 10px; }
+  .result-actions .btn-primary,
+  .result-actions .btn-secondary { width: 100%; text-align: center; }
 }
 </style>
 </head>
@@ -222,9 +268,13 @@ button:disabled { cursor: not-allowed; opacity: 0.55; transform: none; }
   <div class="hero-minimal card">
     <div class="hero-tag">✦ Niubi Type Indicator</div>
     <h1>MBTI已经过时，NBTI来了。</h1>
-    <p class="hero-sub">女人就是NB · 16种女性超级人格测试<br>4个维度 × 28道题 × 找到你的NB方式</p>
+    <p class="hero-sub">女人就是牛逼 · 16种女性超级人格测试<br>4个维度 × 22道题</p>
     <div class="hero-actions">
       <button id="startBtn" class="btn-primary">开始测试</button>
+    </div>
+    <div class="hero-notes">
+      <p>作者是小红书平台的 @Eva的Ai的点子库</p>
+      <p>本测试纯属虚构与娱乐，请轻松看看，不作为任何现实判断依据。</p>
     </div>
   </div>
 </section>
@@ -234,11 +284,11 @@ button:disabled { cursor: not-allowed; opacity: 0.55; transform: none; }
   <div class="test-wrap card">
     <div class="topbar">
       <div class="progress"><span id="progressBar"></span></div>
-      <div class="progress-text" id="progressText">0 / 28</div>
+      <div class="progress-text" id="progressText">0 / 22</div>
     </div>
     <div id="questionList" class="question-list"></div>
     <div class="actions-bottom">
-      <div class="hint" id="testHint">全部选完才能提交。28道题，始终要有始有终。</div>
+      <div class="hint" id="testHint">全部选完才能提交。22道题，很快就能测完。</div>
       <div style="display:flex;gap:12px;flex-wrap:wrap;">
         <button id="backIntroBtn" class="btn-secondary">返回首页</button>
         <button id="submitBtn" class="btn-primary" disabled>提交并查看结果</button>
@@ -251,17 +301,19 @@ button:disabled { cursor: not-allowed; opacity: 0.55; transform: none; }
 <section id="result" class="screen">
   <div class="result-wrap card">
     <div class="result-layout">
-      <div class="result-top">
-        <div class="r-box" id="typeBox">
-          <div class="type-kicker">你的NBTI类型</div>
-          <div class="type-name" id="rTag"></div>
-          <div class="match-badge" id="rCode"></div>
-          <div class="type-quote" id="rQuote"></div>
+      <div class="r-hero">
+        <div class="r-hero-label">你的人格类型是：</div>
+        <div class="r-hero-typename" id="rTypeName"></div>
+        <div class="r-hero-code" id="rCode"></div>
+        <div class="r-hero-img">
+          <img id="rTypeImg" src="" alt="" style="display:none" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" onload="this.style.display='block';this.nextElementSibling.style.display='none'">
+          <div class="r-hero-img-placeholder" id="rImgPlaceholder">图片加载中…</div>
         </div>
-        <div class="r-box">
-          <h3>四维度得分</h3>
-          <div class="dim-grid" id="dimGrid"></div>
-        </div>
+        <div class="r-hero-quote" id="rQuote"></div>
+      </div>
+      <div class="r-box">
+        <h3>四维度得分</h3>
+        <div class="dim-grid" id="dimGrid"></div>
       </div>
       <div class="r-box" id="rCharBox">
         <h3 id="rCharTitle"></h3>
@@ -293,18 +345,18 @@ button:disabled { cursor: not-allowed; opacity: 0.55; transform: none; }
 </div>
 <script>
 const dimLabels = {
-  N: { name: '牛逼区', axis: '主导' },
-  S: { name: '主场区', axis: '主导' },
-  B: { name: '牛逼立', axis: '冲突' },
-  R: { name: '流水立', axis: '冲突' },
-  T: { name: '棋盘立', axis: '谋知' },
-  Z: { name: '赌徒立', axis: '谋知' },
-  I: { name: '孤峰立', axis: '社交' },
-  M: { name: '汇方立', axis: '社交' },
+  N: { name: '进攻型', axis: '第一维', cue: '你是去抢，还是守住自己赢？' },
+  S: { name: '守成型', axis: '第一维', cue: '你是去抢，还是守住自己赢？' },
+  B: { name: '梭哈型', axis: '第二维', cue: '你一把火烧掉，还是慢慢淹？' },
+  R: { name: '耐心型', axis: '第二维', cue: '你一把火烧掉，还是慢慢淹？' },
+  T: { name: '谋略型', axis: '第三维', cue: '你算好了再动，还是押上就干？' },
+  Z: { name: '冲锋型', axis: '第三维', cue: '你算好了再动，还是押上就干？' },
+  I: { name: '孤狼型', axis: '第四维', cue: '你一个人登顶，还是带人上路？' },
+  M: { name: '团队型', axis: '第四维', cue: '你一个人登顶，还是带人上路？' },
 };
 
 const questions = [
-  // === 主导维度：N 牛逼 vs S 主场 (7题) ===
+  // === 第一维度：N 进攻型 vs S 守成型 (6题) ===
   { dim:'NS', label:'主导维度', text:'闺蜜发现她对象的出轨行为，向你倾诉，你的第一反应是：', options:[
     {text:'冷静帮她分析局势，制定一套利益最大化的应对方案',score:'N'},
     {text:'是不是误会了，先问一下情况再说',score:'X'},
@@ -335,13 +387,7 @@ const questions = [
     {text:'想想就算了，太麻烦了',score:'X'},
     {text:'找一个靠谱的合伙人，大家一起讨论着来',score:'S'}
   ]},
-  { dim:'NS', label:'主导维度', text:'在一段亲密关系里，你更倾向于：', options:[
-    {text:'主导关系的走向，大事小事我来安排',score:'N'},
-    {text:'随缘吧，想那么多干啥',score:'X'},
-    {text:'两个人各管各的，互不干涉就是最好的相处',score:'S'}
-  ]},
-
-  // === 冲突维度：B 牛逼立 vs R 流水立 (7题) ===
+  // === 第二维度：B 梭哈型 vs R 耐心型 (5题) ===
   { dim:'BR', label:'冲突维度', text:'工作中你做了一个项目方案，汇报时有人当众质疑你抄袭，你会：', options:[
     {text:'当场用证据怼回去，一个字都不让',score:'B'},
     {text:'不管他，继续说自己的',score:'X'},
@@ -367,18 +413,7 @@ const questions = [
     {text:'算了，就当请客了',score:'X'},
     {text:'找一个合适的场合暗示一下，让对方自己想起来',score:'R'}
   ]},
-  { dim:'BR', label:'冲突维度', text:'你在社交媒体上被人无缘无故黑了，你的反应是：', options:[
-    {text:'直接反杠，逐条反驳',score:'B'},
-    {text:'关了评论，眼不见心不烦',score:'X'},
-    {text:'截图存证，不当场回但默默记住这个人',score:'R'}
-  ]},
-  { dim:'BR', label:'冲突维度', text:'你觉得自己更像哪种动物：', options:[
-    {text:'花豹——看见了就冲，不留后路',score:'B'},
-    {text:'乌龟——别来烦我，谢谢',score:'X'},
-    {text:'蛇——安静等待，出手时必然精准',score:'R'}
-  ]},
-
-  // === 谋知维度：T 棋盘立 vs Z 赌徒立 (7题) ===
+  // === 第三维度：T 谋略型 vs Z 冲锋型 (5题) ===
   { dim:'TZ', label:'谋知维度', text:'面临两个工作机会，一个稳妥低薪，一个高风险高薪，你会：', options:[
     {text:'列详细的利弊分析，算清楚后决定',score:'T'},
     {text:'不想自己决定，找老辈帮忙',score:'X'},
@@ -394,20 +429,10 @@ const questions = [
     {text:'其实想赢的时候会算，大部分时候比较佛系',score:'X'},
     {text:'跟着感觉走，直觉最重要',score:'Z'}
   ]},
-  { dim:'TZ', label:'谋知维度', text:'你买东西之前会大量看评测吗？', options:[
-    {text:'会，看测评、比价格、列清单，不看评测不下手',score:'T'},
-    {text:'看心情，有时候研究有时候不研究',score:'X'},
-    {text:'看到喜欢的直接买，人生要快',score:'Z'}
-  ]},
   { dim:'TZ', label:'谋知维度', text:'你和朋友发生了误会，你会怎么处理？', options:[
     {text:'想清楚前因后果的逻辑，再找对方谈',score:'T'},
     {text:'等等看吧，也许两天就好了',score:'X'},
     {text:'不管那么多，直接去找对方问清楚',score:'Z'}
-  ]},
-  { dim:'TZ', label:'谋知维度', text:'你更欣赏哪种成功方式？', options:[
-    {text:'百年磨一剑，步步为营走到今天',score:'T'},
-    {text:'都挺好的，成功就行了',score:'X'},
-    {text:'押上风口，一把梭哈，赢了就是传奇',score:'Z'}
   ]},
   { dim:'TZ', label:'谋知维度', text:'你面临一个重大的人生决定（辞职/搬家/分手），你通常是：', options:[
     {text:'先做好权衡，想好退路再行动',score:'T'},
@@ -415,7 +440,7 @@ const questions = [
     {text:'想到就动，横竖不会更差了',score:'Z'}
   ]},
 
-  // === 社交维度：I 孤峰立 vs M 汇方立 (7题) ===
+  // === 第四维度：I 孤狼型 vs M 团队型 (6题) ===
   { dim:'IM', label:'社交维度', text:'要安排一件大事，你更倾向于：', options:[
     {text:'自己亲手掌控，别人只会添乱',score:'I'},
     {text:'看情况，简单的自己来，复杂的找人帮忙',score:'X'},
@@ -430,11 +455,6 @@ const questions = [
     {text:'一个人站在山顶，享受孤独的自由',score:'I'},
     {text:'有一些知己就够了，不需要太多人',score:'X'},
     {text:'身边围绕一群活跃的人，一起做更大的事',score:'M'}
-  ]},
-  { dim:'IM', label:'社交维度', text:'在假期中，你更想：', options:[
-    {text:'一个人窝在家里看书/玩游戏，谁也别来烦',score:'I'},
-    {text:'看心情，都可以',score:'X'},
-    {text:'约一群姐妹出去逛，人多才够燃',score:'M'}
   ]},
   { dim:'IM', label:'社交维度', text:'你遇到了一个很好的机会，但需要求人帮忙，你会：', options:[
     {text:'宁可自己多花时间精力，也不想麻烦人情',score:'I'},
@@ -568,6 +588,13 @@ const results = {
   },
 };
 
+const typeImages = {
+  'NBTI':'01','NBZI':'02','NBTM':'03','NBZM':'04',
+  'NRTI':'05','NRZI':'06','NRTM':'07','NRZM':'08',
+  'SBTI':'09','SBZI':'10','SBTM':'11','SBZM':'12',
+  'SRTI':'13','SRZI':'14','SRTM':'15','SRZM':'16',
+};
+
 // ========== STATE ==========
 let answers = {};
 
@@ -599,8 +626,8 @@ function buildQuestions() {
       <div class="question-title">${q.text}</div>
       <div class="options">
         ${q.options.map((o, j) => `
-          <label class="option" id="opt-${i}-${j}">
-            <input type="radio" name="q${i}" value="${o.score}" onchange="selectOption(${i},${j},'${o.score}')">
+          <label class="option" id="opt-${i}-${j}" onclick="selectOption(${i},${j},'${o.score}')">
+            <input type="radio" name="q${i}" value="${o.score}" tabindex="-1">
             <span>${o.text}</span>
           </label>
         `).join('')}
@@ -637,11 +664,17 @@ function showResult() {
   const r = results[type];
   if (!r) return;
 
-  document.getElementById('rTag').textContent = r.tag;
+  const typeName = r.tag.replace(/^[A-Za-z]+\s*[-–]\s*/, '');
+  document.getElementById('rTypeName').textContent = typeName;
   document.getElementById('rCode').textContent = type;
   document.getElementById('rQuote').textContent = r.quote;
+  const img = document.getElementById('rTypeImg');
+  const placeholder = document.getElementById('rImgPlaceholder');
+  img.style.display = 'none';
+  placeholder.style.display = 'flex';
+  img.src = `images/${typeImages[type] || '01'}.png`;
 
-  const charTitle = r.title ? `代表人物 · ${r.name} · ${r.title} ${r.emoji}` : `代表人物 · ${r.name} ${r.emoji}`;
+  const charTitle = r.title ? `${r.name} · ${r.title} ${r.emoji}` : `${r.name} ${r.emoji}`;
   document.getElementById('rCharTitle').textContent = charTitle;
   document.getElementById('rCharDesc').textContent = r.desc;
   document.getElementById('rAnalysis').textContent = r.analysis;
@@ -656,6 +689,7 @@ function showResult() {
   document.getElementById('dimGrid').innerHTML = dimDisplay.map(d => `
     <div class="dim-pill">
       <div class="label">${dimLabels[d.key].axis} · ${dimLabels[d.key].name}</div>
+      <div class="label">${dimLabels[d.key].cue}</div>
       <div class="value">${d.pct}%</div>
       <div class="bar"><div class="bar-fill" style="width:0%" data-pct="${d.pct}"></div></div>
     </div>
