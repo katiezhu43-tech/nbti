@@ -166,7 +166,7 @@ button:disabled { cursor: not-allowed; opacity: 0.55; transform: none; }
 /* RESULT HERO CARD */
 .r-hero {
   border: 1px solid var(--line); border-radius: var(--radius);
-  background: linear-gradient(150deg, #f5eeff 0%, #fff0f5 60%, #fff8fb 100%);
+  background: #fff;
   padding: 28px 22px 24px;
   text-align: center;
 }
@@ -194,7 +194,7 @@ button:disabled { cursor: not-allowed; opacity: 0.55; transform: none; }
 .r-hero-img img {
   width: 100%; height: 100%;
   object-fit: contain; display: block;
-  transform: scale(1.25);
+  transform: scale(1.1);
 }
 .r-hero-img-placeholder {
   width: 100%; height: 100%;
@@ -207,6 +207,10 @@ button:disabled { cursor: not-allowed; opacity: 0.55; transform: none; }
 .r-hero-quote {
   font-size: 14px; color: #5a3a48;
   line-height: 1.85;
+}
+.r-char-name {
+  font-size: 17px; font-weight: 700; color: var(--text);
+  margin-bottom: 10px;
 }
 .type-badge {
   display: inline-block;
@@ -321,20 +325,21 @@ button:disabled { cursor: not-allowed; opacity: 0.55; transform: none; }
         <div class="r-hero-quote" id="rQuote"></div>
       </div>
       <div class="r-box">
-        <h3>四维度得分 <span class="type-badge" id="rCodeBadge"></span></h3>
-        <div class="dim-grid" id="dimGrid"></div>
-      </div>
-      <div class="r-box" id="rCharBox">
-        <h3 id="rCharTitle"></h3>
-        <div class="analysis-section"><p id="rCharDesc"></p></div>
-      </div>
-      <div class="r-box">
         <h3>人格深度分析</h3>
         <div class="analysis-section"><p id="rAnalysis"></p></div>
+      </div>
+      <div class="r-box" id="rCharBox">
+        <h3>代表人物</h3>
+        <div class="r-char-name" id="rCharTitle"></div>
+        <div class="analysis-section"><p id="rCharDesc"></p></div>
       </div>
       <div class="r-box">
         <h3>你的人生四维度</h3>
         <div class="life-dims" id="lifeDims"></div>
+      </div>
+      <div class="r-box">
+        <h3>四维度得分 <span class="type-badge" id="rCodeBadge"></span></h3>
+        <div class="dim-grid" id="dimGrid"></div>
       </div>
       <div class="r-box note-box">
         <h3>善意提示</h3>
@@ -688,7 +693,8 @@ function showResult() {
   const charTitle = r.title ? `${r.name} · ${r.title} ${r.emoji}` : `${r.name} ${r.emoji}`;
   document.getElementById('rCharTitle').textContent = charTitle;
   document.getElementById('rCharDesc').textContent = r.desc;
-  document.getElementById('rAnalysis').textContent = r.analysis;
+  const analysisText = r.analysis.replace(/^[^—]*——\s*/, '');
+  document.getElementById('rAnalysis').textContent = analysisText;
 
   const dimDisplay = [
     { key: type[0], pct: r.dims.N },
