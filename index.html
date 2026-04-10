@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NBTI 人格测试 — 女人就是牛鹿</title>
+<style>
+:root {
+  --bg: #fdf6f6;
+  --panel: #ffffff;
+  --text: #2a1a1e;
+  --muted: #8a6a72;
+  --line: #e8d5d9;
+  --soft: #f6edef;
+  --accent: #a04058;
+  --accent-strong: #8b1a2b;
+  --gold: #c9a84c;
+  --shadow: 0 16px 40px rgba(140,40,60,0.07);
+  --radius: 22px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: radial-gradient(circle at top left, #fff8f8 0, #fdf6f6 36%, #f9f2f3 100%);
+  color: var(--text);
+  min-height: 100vh;
+}
+.shell { max-width: 980px; margin: 0 auto; padding: 24px 16px 56px; }
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* HERO */
+.hero-minimal {
+  min-height: 52vh;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center;
+  padding: 42px 20px;
+  margin-top: 20px;
+  position: relative; overflow: hidden;
+}
+.hero-minimal::after {
+  content: ""; position: absolute; right: -60px; top: -60px;
+  width: 180px; height: 180px; border-radius: 50%;
+  background: linear-gradient(180deg, rgba(200,168,76,0.15), rgba(200,168,76,0.02));
+  pointer-events: none;
+}
+.hero-minimal h1 {
+  font-size: clamp(32px, 6vw, 56px);
+  line-height: 1.1; letter-spacing: -0.03em;
+  background: linear-gradient(135deg, var(--accent-strong), var(--gold));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub {
+  margin-top: 14px; color: var(--muted);
+  font-size: 15px; line-height: 1.75;
+}
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--accent-strong);
+  border: 1px solid var(--line); background: var(--soft);
+  border-radius: 999px; padding: 8px 14px; margin-bottom: 16px;
+  letter-spacing: 0.08em;
+}
+
+/* BUTTONS */
+button {
+  border: 0; cursor: pointer; font: inherit;
+  transition: transform .16s, box-shadow .16s, opacity .16s;
+}
+button:hover { transform: translateY(-1px); }
+button:disabled { cursor: not-allowed; opacity: 0.55; transform: none; }
+.btn-primary {
+  background: var(--accent-strong); color: #fff;
+  padding: 14px 28px; border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(139,26,43,0.18);
+  font-weight: 700; font-size: 15px;
+}
+.btn-secondary {
+  background: #fff; color: var(--accent-strong);
+  padding: 14px 20px; border-radius: 14px;
+  border: 1px solid var(--line); font-weight: 700;
+}
+.hero-actions { display: flex; gap: 12px; margin-top: 28px; justify-content: center; }
+
+/* TEST */
+.test-wrap { margin-top: 22px; padding: 22px; }
+.topbar {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 16px; margin-bottom: 18px; flex-wrap: wrap;
+}
+.progress {
+  flex: 1; min-width: 200px; height: 10px;
+  background: var(--soft); border-radius: 999px; overflow: hidden;
+}
+.progress > span {
+  display: block; width: 0; height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--accent-strong));
+  border-radius: inherit; transition: width .3s ease;
+}
+.progress-text { color: var(--muted); font-size: 13px; white-space: nowrap; }
+
+.question-list { display: grid; gap: 16px; }
+.question {
+  border: 1px solid var(--line); border-radius: 18px;
+  padding: 18px; background: linear-gradient(180deg, #fff, #fffbfb);
+}
+.question-meta {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 12px; margin-bottom: 10px; color: var(--muted); font-size: 12px;
+}
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  border-radius: 999px; padding: 6px 10px;
+  background: var(--soft); border: 1px solid var(--line);
+  font-weight: 600; color: var(--accent-strong);
+}
+.question-title { font-size: 16px; line-height: 1.7; font-weight: 500; }
+.options { display: grid; gap: 10px; margin-top: 14px; }
+.option {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px; border-radius: 14px;
+  border: 1px solid var(--line); background: #fff;
+  cursor: pointer;
+  transition: border-color .16s, background .16s, transform .16s;
+}
+.option:hover { border-color: var(--accent); background: #fef8f9; }
+.option.selected { border-color: var(--accent-strong); background: var(--soft); }
+.option input { accent-color: var(--accent-strong); transform: scale(1.15); flex-shrink: 0; }
+
+.actions-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 12px; flex-wrap: wrap; margin-top: 18px; padding-top: 6px;
+}
+.hint { color: var(--muted); font-size: 13px; line-height: 1.7; }
+
+/* RESULT */
+.result-wrap { margin-top: 22px; padding: 22px; }
+.result-layout { display: grid; gap: 18px; }
+.result-top {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 18px; align-items: stretch;
+}
+.r-box {
+  border: 1px solid var(--line); border-radius: 18px;
+  padding: 20px; background: linear-gradient(180deg, #fff, #fffbfb);
+}
+.r-box h3 { font-size: 16px; margin-bottom: 14px; color: var(--text); }
+
+.type-kicker {
+  font-size: 12px; color: var(--accent-strong);
+  margin-bottom: 8px; letter-spacing: .06em; font-weight: 700;
+}
+.type-name {
+  font-size: clamp(28px, 5vw, 44px);
+  line-height: 1.1; letter-spacing: -0.03em; font-weight: 900;
+}
+.type-subname { margin-top: 10px; color: var(--muted); font-size: 14px; line-height: 1.8; }
+.match-badge {
+  margin-top: 16px; display: inline-flex; align-items: center; gap: 8px;
+  border-radius: 999px; padding: 10px 14px;
+  background: var(--soft); border: 1px solid var(--line);
+  color: var(--accent-strong); font-weight: 700; font-size: 14px;
+}
+.type-quote {
+  margin-top: 16px; font-style: italic; color: var(--accent);
+  font-size: 15px; line-height: 1.8;
+}
+
+.dim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.dim-pill {
+  border: 1px solid var(--line); border-radius: 14px;
+  padding: 14px; background: #fff;
+}
+.dim-pill .label { color: var(--muted); font-size: 12px; margin-bottom: 4px; }
+.dim-pill .value { font-size: 22px; font-weight: 800; color: var(--accent-strong); }
+.dim-pill .bar { height: 4px; background: var(--soft); border-radius: 2px; margin-top: 8px; overflow: hidden; }
+.dim-pill .bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--accent-strong)); border-radius: 2px; transition: width 1s ease; }
+
+.analysis-section { margin-top: 4px; }
+.analysis-section p {
+  color: #3a2028; font-size: 15px; line-height: 1.9; white-space: pre-wrap;
+}
+.life-dims { display: grid; gap: 12px; margin-top: 16px; }
+.life-dim {
+  border: 1px solid var(--line); border-radius: 16px;
+  padding: 16px; background: #fff;
+}
+.life-dim-title {
+  font-size: 14px; font-weight: 700; color: var(--accent-strong); margin-bottom: 8px;
+}
+.life-dim p { color: var(--muted); font-size: 13px; line-height: 1.9; margin: 0; }
+
+.note-box p { color: var(--muted); font-size: 13px; line-height: 1.8; }
+.result-actions {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 12px; flex-wrap: wrap; margin-top: 22px;
+}
+.footer-note { margin-top: 16px; color: var(--muted); font-size: 12px; line-height: 1.7; }
+
+@media (max-width: 860px) { .result-top, .dim-grid { grid-template-columns: 1fr; } }
+@media (max-width: 600px) {
+  .shell { padding: 14px 12px 42px; }
+  .test-wrap, .result-wrap { padding: 16px; }
+  .hero-minimal h1 { font-size: 28px; }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- INTRO -->
+<section id="intro" class="screen active">
+  <div class="hero-minimal card">
+    <div class="hero-tag">✦ Niubi Type Indicator</div>
+    <h1>MBTI已经过时，NBTI来了。</h1>
+    <p class="hero-sub">女人就是牛鹿 · 16种女性超级人格测试<br>4个维度 × 28道题 × 找到你的牛鹿方式</p>
+    <div class="hero-actions">
+      <button id="startBtn" class="btn-primary">开始测试</button>
+    </div>
+  </div>
+</section>
+
+<!-- TEST -->
+<section id="test" class="screen">
+  <div class="test-wrap card">
+    <div class="topbar">
+      <div class="progress"><span id="progressBar"></span></div>
+      <div class="progress-text" id="progressText">0 / 28</div>
+    </div>
+    <div id="questionList" class="question-list"></div>
+    <div class="actions-bottom">
+      <div class="hint" id="testHint">全部选完才能提交。28道题，始终要有始有终。</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <button id="backIntroBtn" class="btn-secondary">返回首页</button>
+        <button id="submitBtn" class="btn-primary" disabled>提交并查看结果</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULT -->
+<section id="result" class="screen">
+  <div class="result-wrap card">
+    <div class="result-layout">
+      <div class="result-top">
+        <div class="r-box" id="typeBox">
+          <div class="type-kicker">你的NBTI类型</div>
+          <div class="type-name" id="rTag"></div>
+          <div class="match-badge" id="rCode"></div>
+          <div class="type-quote" id="rQuote"></div>
+        </div>
+        <div class="r-box">
+          <h3>四维度得分</h3>
+          <div class="dim-grid" id="dimGrid"></div>
+        </div>
+      </div>
+      <div class="r-box" id="rCharBox">
+        <h3 id="rCharTitle"></h3>
+        <div class="analysis-section"><p id="rCharDesc"></p></div>
+      </div>
+      <div class="r-box">
+        <h3>人格深度分析</h3>
+        <div class="analysis-section"><p id="rAnalysis"></p></div>
+      </div>
+      <div class="r-box">
+        <h3>你的人生四维度</h3>
+        <div class="life-dims" id="lifeDims"></div>
+      </div>
+      <div class="r-box note-box">
+        <h3>善意提示</h3>
+        <p>本测试纯属娱乐，别拿它当圣旨、面试、相亲、分手或任何人生重大决策书。每个女人都有属于自己的牛鹿方式 ✨</p>
+      </div>
+    </div>
+    <div class="result-actions">
+      <div class="footer-note">未经分享给姐妹，看看她是哪种牛鹿</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <button id="restartBtn" class="btn-secondary">重新测试</button>
+        <button id="toTopBtn" class="btn-primary">回到首页</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+<script>
+const dimLabels = {
+  N: { name: '牛逼区', axis: '主导' },
+  S: { name: '主场区', axis: '主导' },
+  B: { name: '牛逼立', axis: '冲突' },
+  R: { name: '流水立', axis: '冲突' },
+  T: { name: '棋盘立', axis: '谋知' },
+  Z: { name: '赌徒立', axis: '谋知' },
+  I: { name: '孤峰立', axis: '社交' },
+  M: { name: '汇方立', axis: '社交' },
+};
+
+const questions = [
+  // === 主导维度：N 牛逼 vs S 主场 (7题) ===
+  { dim:'NS', label:'主导维度', text:'遗憾第10086次发现你男性朋友的渣男行为，你的第一反应是：', options:[
+    {text:'帮她分析局势，制定一套应对方案',score:'N'},
+    {text:'发图片、问一下情况再说',score:'X'},
+    {text:'打好调子，帮她想想怎么让这段关系更好',score:'S'}
+  ]},
+  { dim:'NS', label:'主导维度', text:'小组作业整体进度缓慢，你会怎么办？', options:[
+    {text:'立即组织沟通，每个人的任务明确',score:'N'},
+    {text:'奈之不干，他们都不急来我也不急',score:'X'},
+    {text:'做好自己的部分，相信团队最终能奏效',score:'S'}
+  ]},
+  { dim:'NS', label:'主导维度', text:'不相熟多年的男/女朋友讨论婚礼仪式，你的风格是：', options:[
+    {text:'从餐厅到座位到节目，全部亲来安排',score:'N'},
+    {text:'全部包办，不要让我操心',score:'X'},
+    {text:'定一个地点，大家来了喝个饭聊一下就行',score:'S'}
+  ]},
+  { dim:'NS', label:'主导维度', text:'你和朋友一起旅行，到了目的地发现酒店超订，你会：', options:[
+    {text:'立即联系投诉+找替代酒店，用程序把它搞定',score:'N'},
+    {text:'算了算了，凑合住一晚上吧',score:'X'},
+    {text:'让大家一起讨论，看怎么办最好',score:'S'}
+  ]},
+  { dim:'NS', label:'主导维度', text:'公司年会要筹备节目，你的反应是：', options:[
+    {text:'主动组织，流程、场地、内容，全部有说有交代',score:'N'},
+    {text:'别cue我，我可以当观众/',score:'X'},
+    {text:'有人组织就参加，随便完成就干就行',score:'S'}
+  ]},
+  { dim:'NS', label:'主导维度', text:'你发现了一个很好的创业机会，但需要组建团队，你会：', options:[
+    {text:'主动担纲，找人来执行我的想法',score:'N'},
+    {text:'想想就算了，太麻烦了',score:'X'},
+    {text:'找一个靠谱的合伙人，大家一起讨论着来',score:'S'}
+  ]},
+  { dim:'NS', label:'主导维度', text:'在一段亲密关系里，你更倾向于：', options:[
+    {text:'主导关系的走向，大事小事我来安排',score:'N'},
+    {text:'随缘吧，想那么多干啥',score:'X'},
+    {text:'两个人各管各的，互不干涉就是最好的相处',score:'S'}
+  ]},
+
+  // === 冲突维度：B 牛逼立 vs R 流水立 (7题) ===
+  { dim:'BR', label:'冲突维度', text:'工作中你做了一个项目方案，汇报时有人当会质疑你抄了一下，你会：', options:[
+    {text:'当场用证据演回去，一个字都不让',score:'B'},
+    {text:'不管他，继续说自己的',score:'X'},
+    {text:'微笑不接话，转头用成绩碾回来',score:'R'}
+  ]},
+  { dim:'BR', label:'冲突维度', text:'不相熟多年的男/女朋友讨论结婚，对方家庭提出了一个离谱的条件，你：', options:[
+    {text:'直接开杠：「这个条件是在侮辱我」',score:'B'},
+    {text:'大脑空白不知道怎么办',score:'X'},
+    {text:'笑着说「我想想」，后面找真正原因分析',score:'R'}
+  ]},
+  { dim:'BR', label:'冲突维度', text:'工作中被很信任、给了很多资源的上属坑，你的处理方式是：', options:[
+    {text:'明确、清算、不必从此出门，干脆利落',score:'B'},
+    {text:'可能什么都要退，表示理解',score:'X'},
+    {text:'不在声色，找机会让他自己来归去',score:'R'}
+  ]},
+  { dim:'BR', label:'冲突维度', text:'有急需的时候有人挡到你前面，你会：', options:[
+    {text:'直接开口：「不好意思，我很急」',score:'B'},
+    {text:'在心里骂两句但不说话',score:'X'},
+    {text:'默默往前一点，用气势让对方自觉',score:'R'}
+  ]},
+  { dim:'BR', label:'冲突维度', text:'朋友欠了你的钱一直不还，你会怎么处理？', options:[
+    {text:'直接问：「上次借的钱什么收回？」',score:'B'},
+    {text:'算了，就当请客了',score:'X'},
+    {text:'找一个合适的场合暗示一下，让对方自己想起来',score:'R'}
+  ]},
+  { dim:'BR', label:'冲突维度', text:'你在社交媒体上被人无缘无故黑了，你的反应是：', options:[
+    {text:'直接反杠，逐条反驳',score:'B'},
+    {text:'关了评论，眼不见心不烦',score:'X'},
+    {text:'截图存证，不当场回但默默记住这个人',score:'R'}
+  ]},
+  { dim:'BR', label:'冲突维度', text:'你觉得自己更像哪种动物：', options:[
+    {text:'花豹——看见了就冲，不留后路',score:'B'},
+    {text:'乌龟——别来烦我，谢谢',score:'X'},
+    {text:'蛇——安静等待，出手时候才出稳',score:'R'}
+  ]},
+
+  // === 谋知维度：T 棋盘立 vs Z 赌徒立 (7题) ===
+  { dim:'TZ', label:'谋知维度', text:'面临两个工作机会，一个稳妥低薪来一个高风险高薪来，你：', options:[
+    {text:'列详细的利弊分析，算清楚后决定',score:'T'},
+    {text:'不想自己决定，找老辈帮忙',score:'X'},
+    {text:'直觉告诉我喜欢哪个就冲',score:'Z'}
+  ]},
+  { dim:'TZ', label:'谋知维度', text:'你在社交场发现一个潜在的商机，你会：', options:[
+    {text:'回去中布局，梳理好关键人物',score:'T'},
+    {text:'很想去，但是也不会主动干啥',score:'X'},
+    {text:'直接碰自我介绍，靠运气搭上说话',score:'Z'}
+  ]},
+  { dim:'TZ', label:'谋知维度', text:'跟人打牌/麻将的时候，你属于哪种？', options:[
+    {text:'走一步算了步，享受布局的快感',score:'T'},
+    {text:'其实想赢的时候会算，大部分时候比较佛系',score:'X'},
+    {text:'跟着感觉走，直觉最重要',score:'Z'}
+  ]},
+  { dim:'TZ', label:'谋知维度', text:'你买东西之前会大量看评课吗？', options:[
+    {text:'会，看测评、比价格、列清单，不看评课不下手',score:'T'},
+    {text:'看心情，有时候研究有时候不研究',score:'X'},
+    {text:'看到喜欢的直接买，人生要快',score:'Z'}
+  ]},
+  { dim:'TZ', label:'谋知维度', text:'你和朋友发生了误会，你会怎么处理？', options:[
+    {text:'想清楚前因后果的逻辑，再找对方谈',score:'T'},
+    {text:'等等看吧，也许两天就好了',score:'X'},
+    {text:'管他就去问，想清楚后再说',score:'Z'}
+  ]},
+  { dim:'TZ', label:'谋知维度', text:'你更欣赏哪种成功方式？', options:[
+    {text:'百年磨一剑，步步为营走到今天',score:'T'},
+    {text:'都挺好的，成功就行了',score:'X'},
+    {text:'押了风口上一把梭哈，赢赢了就是传奇',score:'Z'}
+  ]},
+  { dim:'TZ', label:'谋知维度', text:'你要对一个重大的人生决定，（辞职/搬家/分手），你通常是：', options:[
+    {text:'先做好权衡，想好退路再行动',score:'T'},
+    {text:'纠结很久，最后可能还是维持现状',score:'X'},
+    {text:'想到就动，横竖就会失败嘛',score:'Z'}
+  ]},
+
+  // === 社交维度：I 孤峰立 vs M 汇方立 (7题) ===
+  { dim:'IM', label:'社交维度', text:'要安排一件大事，你更倾向于：', options:[
+    {text:'自己在手掌控，别人只会添乱',score:'I'},
+    {text:'看情况吧，简单的自己来，复杂的找人帮忙',score:'X'},
+    {text:'找到对的人组起，一起最好',score:'M'}
+  ]},
+  { dim:'IM', label:'社交维度', text:'在一个新环境里，你的社交策略是：', options:[
+    {text:'保持距离和神秘感，让别人来找我',score:'I'},
+    {text:'不主动也不拒绝，顺其自然',score:'X'},
+    {text:'主动出去建立关系网，什么时候都是需要的',score:'M'}
+  ]},
+  { dim:'IM', label:'社交维度', text:'放假之后，你最想的状态是：', options:[
+    {text:'一个人站在山顶，享受孤独的自由',score:'I'},
+    {text:'有一些知己就够了，不需要太多人',score:'X'},
+    {text:'身边围绕一群活跃的人，一起做更大的事',score:'M'}
+  ]},
+  { dim:'IM', label:'社交维度', text:'在假期中，你更想：', options:[
+    {text:'一个人窝在家里看书/玩游戏，谁也别来烦',score:'I'},
+    {text:'看心情，都可以',score:'X'},
+    {text:'约一群姐妹出去逛，人多才够燃',score:'M'}
+  ]},
+  { dim:'IM', label:'社交维度', text:'你遇到了一个很好的机会，但需要求人帮忙，你会：', options:[
+    {text:'宁可自己多花时间精力，也不想麻烦人情',score:'I'},
+    {text:'看是谁吧，关系好的可以开口',score:'X'},
+    {text:'该开口就开口，人脉就是用来用的',score:'M'}
+  ]},
+  { dim:'IM', label:'社交维度', text:'你更认同哪句话：', options:[
+    {text:'「靠山山倒，靠人人跑，靠自己最好」',score:'I'},
+    {text:'「看情况，灵活一点」',score:'X'},
+    {text:'「一个人走得快，一群人走得远」',score:'M'}
+  ]},
+  { dim:'IM', label:'社交维度', text:'你的微信通讯录中，你的态度是：', options:[
+    {text:'定期清清，不见的在里，看不看的都是精选',score:'I'},
+    {text:'不管也不减，随便就行',score:'X'},
+    {text:'越多越好，你永远不知道什么时候用得上谁',score:'M'}
+  ]},
+];
+
+const results = {
+  'NBTI': { tag:'EMPEROR-统治者', name:'武则天', title:'至尊女帝', emoji:'👑',
+    quote:'「有人说女人不该弄权谋」我说，此子不才，我永此子。',
+    desc:'你是在四维度满分的统治BOSS。控制全局、冷静无菌、深谋远虑、冲突中用人——这不是普通的强，这是改变游戏规则的强。你从不问"我能不能"，只问"我要不要"。在你的世界里，天花板都是用来踩碎的。',
+    analysis:'牛逼区 × 牛逼立 × 棋盘立 × 孤峰立——四个维度全部最到极致的你，是人群中最稀少的存在。你天生自带"系统管理员"属性，不是在某个层面赢，而是在设计这个层。你的控制欲不是来自不安全感，而是来自一种近乎本能的秩序渴望——你见到乱就想整，见到低就想提，见到天花板就想摘。你的爱的模式是"深爱但不依赖"，你可以爱一个人，但你绝不会让任何人成为你的软肋。你最大的恐惧不是失败，而是平庸。',
+    life: { career:'你注定是任何组织里最有力的那个人。给你一个可以的职位你都能出走。你需要的不是"好工作"，而是"属于你的舞台"。你在团队中是天然的决策中心，但要注意——不是所有人都能跟得上你的速度，学会等一等，你的帝国建得稳。', love:'你不缺追求者，但你缺"能把你放平视角的人"。软弱的人你一眼不上，比你还强的人你又不肯。你的理想伴侣是"赤手空拳打天下"的风格——平等相遇，各立一方。需要你一句：偶尔放下武装，不是示弱，是让对方有机会真正疼你。', social:'你身边的人对你的评价往往是"佩服但有距离感"。这不是你的错，是你的气场自带结界。少数能走进你内围的人，都是你的正经知己。', growth:'你最大的拦人是"啥都要自己来"的执念。你可以一个人赢，但一个人孤。' },
+    dims:{N:95,B:90,T:95,I:85}
+  },
+  'NBZI': { tag:'SLAYER-杀伐者', name:'冼夺', title:'险行太岁', emoji:'🗡️',
+    quote:'「心慈则软的人，遇上不仁者」。',
+    desc:'你是控制欲的真正隐形人物，手段冷静、不需要多少弯弯绕——直觉就是你最好的武器，冲动是笑来笑去。你不屑于解释自己，行动就是你的宣言。批你的人不会有第二次机会。',
+    analysis:'牛逼区 × 牛逼立 × 赌徒立 × 孤峰立——你是四个维度里"攻击性"最强的组合。跟棋盘立不同，你不需要算到第二步才行动，你的直觉就是你最快的武器。你做决定的速度让别人害怕，因为大多数人还在纠结的时候你已经执行完了。你的社交风格是"要么忘我要么消失"，没有中间地带。',
+    life: { career:'你是那种"临场救命"类人物——越是别人摆烂的烂摊子，你越能摸出一条出路。你不擅长也不属于稳定老牌公司，你的策略就是"用作品说话"。', love:'你爱一个人的方式是"我帮你摆平所有人在等待"。选择你的话。你需要一个"不试图制约你"的人——能在你发火时稳稳站在那里，不让也不漏。', social:'你的朋友不多但是每一个都经过了你的"淘汰测试"。看不来的，互不交往。', growth:'"快"是你的优势，但也"慢一步"会让你的局更大。不是每次出手都需要正面冲撞。' },
+    dims:{N:90,B:95,T:40,I:90}
+  },
+  'NBTM': { tag:'PLAYER-破局者', name:'狐狸', title:'险袭命棋', emoji:'🦸',
+    quote:'「紫禁城的棋局，裂妾从来不是棋子」。',
+    desc:'拿捏人心、表面温柔实内心硬核、谋知深远、超特别会用人——你就是宫廷最女主角的满分模板。你知道什么时候该忍、什么时候该动、该怎么调和该把弄谁。所有人以为你是隐忍的时候，你已经在布下一局了。',
+    analysis:'牛逼区 × 牛逼立 × 棋盘立 × 汇方立——你是最"全能"的类型之一。你是那种在任何群体里都能迅速找到最有价值的结果，然后摸进关键位置的人。你的社交不是"广撒网"，而是"精力投资"——每一段关系你都清楚它的价值和边界。',
+    life: { career:'你在职场上脱颖而出的方式不是埋头干活，而是"找到关键人物"。你天生知道谁说了算、谁能帮你、谁是棋子。唯一的风险是，太会读人，有时候会忘了做事。', love:'你在爱情里是"策略家"——你不会盲目投入，你会观察、试探、确认安全之后交出心。你需要的人是"让你放弃计算"的那种。', social:'你的朋友圈分层得很清晰——谁是核心圈、谁是利益圈、谁是点赞之交，你心里有一本账。', growth:'不是每段关系都需要"有用"。偶尔交一个"没用但开心"的朋友，你会发现自己轻松得多。' },
+    dims:{N:88,B:80,T:92,I:30}
+  },
+  'NBZM': { tag:'RABBIT-别骗俺耳朵啊（大妹儿）', name:'穿漏漏', title:'乘根太岁', emoji:'🌾',
+    quote:'「从宫女到太岁，每一步都是用自己赌走的」。',
+    desc:'控制欲强、既硬核、靠直觉行事、又了解交流的人。你是那种出身平台但硬往不认命的人。不需要精密计算，你天生就知道该怎么走，而且总能在关键时刻找到帮你的人。当命运想让你低头，你偏要立起来更高处。',
+    analysis:'牛逼区 × 牛逼立 × 赌徒立 × 汇方立——别被"别骗俺耳朵"骗了，你的底色其实是牛逼区+牛逼立，最厉害的表皮。只不过你天生有一种"让人想帮你"的本能——不是心机，是真诚。',
+    life: { career:'你最大的职场优势是"贵人眼"——不是因为你会摇尾巴，而是你的真诚让人敢为你不可。你擅长那种需要从零开始、团队协作、快速试错的环境。', love:'你是"热爱"和"清醒"的奇妙结合——爱的时候也无顾虑，清醒的时候早早未雨。你最大的弱点：总被"对你好"的人吸引。', social:'你是朋友圈里的"家宝"——大家都欢迎你，但你的正信任的人不超过两三个。', growth:'你的"别骗"是天赋，但别让它变软肋。学会说"不"，是你从别骗俺耳朵升成正别骗棋走的关键。' },
+    dims:{N:85,B:82,T:35,I:25}
+  },
+  'NRTI': { tag:'SPIDER-结局者', name:'蜘蛛心', title:'操影棋手', emoji:'🕭',
+    quote:'「你以为我在笑，其实我在结网」。',
+    desc:'牛逼区出去但从不露踪迹，流水般的手段，每一步都经过精密计算，从不需要冲——因为你本身就是最厉害的系统。你的笑容是伪装，沉默是布局，示弱是陷阱。',
+    analysis:'牛逼区 × 流水立 × 棋盘立 × 孤峰立——你是16种类型里"最不容易被看穿"的那个。你从不正面冲突，但你对局势的掌控感比任何牛逼立都强。因为牛逼立赢的是一场对决，你赢的是整场对弈。',
+    life: { career:'你适合做"幕后的大佬"。小小的台前你不用乐，你用网的是"让事情按照你的心意走"。你是最好的策略师、协调者、产品操盘手。', love:'你在爱情里是最难追的那种人——不是因为你酷，而你的雷达太灵敏了，任何不诚的话术都会被你察觉到。能让你在心的人，必须是"有目标不摸ta"的那种。', social:'你的通讯录很少，但是每一个人都是"精品"。别人觉得你高冷，你觉得自己只是在节约时间。', growth:'不是所有的事都需要"局"。偶尔允许自己不计算、不布局、随便活一天，你会发现"失控"也挺好的。' },
+    dims:{N:90,B:20,T:93,I:88}
+  },
+  'NRZI': { tag:'HUNTER-猎捕者', name:'猎命迦', title:'跨域猎手', emoji:'🦅',
+    quote:'「你的天花板，不过是我的地板」。',
+    desc:'控制欲满格但手段玩味、靠直觉判断、独立行动——你是那种让所有人都低估、然后逆风翻局的猎影角色。你不需要大声说话，你的成绩多来自。世界是你的猎场，规则由你来定。',
+    analysis:'牛逼区 × 流水立 × 赌徒立 × 孤峰立——你是"被低估"这件事的最大赢家。你有一种近乎超合理的直觉——你能感到机会的锁扣，然后以一种别人完全预想不到的方式打下去。',
+    life: { career:'你最强的职场能力是"跨域抢风"——别人还在一个赛道内卷，你已经看到了另一个赛道的机会。你适合"没有路"的地方——因为你会自己踩出一条来。', love:'你在爱情里更像一个"投资人"——你会评估对方能给你的生活带来什么升级。但当你的真爱上一个人的时候，你的付出也是不计划来的。', social:'你的社交风格是"当局独自立"——别人觉得你神秘，你觉得自己只是在选择。', growth:'不是所有关系都需要"赢"。有些人值得你放下计划，纯粹地享受在一起的感觉。' },
+    dims:{N:92,B:25,T:35,I:90}
+  },
+  'NRTM': { tag:'RICH-富权者', name:'Kris Jenner', title:'家族棋的手', emoji:'💱',
+    quote:'「我不是在经营家族，我是在经营帝国」。',
+    desc:'拿捏虚实最强、以满足人心、深谋远虑、超有长线眼力——你就是天生的"经纪人和人格"。你知道怎么让身边每一个人的价值最大化，包括你自己。表面上你是妈妈/姐姐/好朋友，实际上你是整个团队的CEO。',
+    analysis:'牛逼区 × 流水立 × 棋盘立 × 汇方立——你是天生的"价值放大器"。你的世界不是一个人——你的世界是"这个东西的市场在哪里、怎么定价、怎么卖"。',
+    life: { career:'你最强的能力不是自己干得多好，而是"让别人帮你干得更好"。你是最好的资源整合者。你适合开平台养人才，而不是做藝人当人才。', love:'你在爱情里是"管家婆式大人物"模板——你不需要被呵护，你需要一个跟你一起把家庭当作事业来经营的人。', social:'你是所有人的"超级连接者"。所有人都乐意跟你交往，因为跟你做朋友永远是"合算"的。', growth:'不是所有关系都需要"投资有来看"。允许自己来一段"没有ROI"的调和，你的人生会多一些温度。' },
+    dims:{N:95,B:20,T:90,I:15}
+  },
+  'NRZM': { tag:'SPEAKER-讲述者', name:'PAPI酱', title:'', emoji:'🦚',
+    quote:'「我的生活还有意思，然后靠意思过这些的生活」。',
+    desc:'牛逼区出去但从不摸破踪、靠直觉踩中时代脉绪、身边永远有一群帮她放大声音的人。你是那种看起来在玩的笑、实际上在赚钱的人。你最大的天赋是，把自己的这些生活做成别人想看的内容。',
+    analysis:'牛逼区 × 流水立 × 赌徒立 × 汇方立——你是最"内容型"的类型。你的牛逼区让你永远在寻找新的表达领域，流水立让你的输出毫不违心，赌徒立让你敢说别人不敢说的话，汇方立让你天然来拥有观众缘。',
+    life: { career:'你最大的资产就是"你自己"。你不需要去哪个公司上班，你就是一个公司。唯一要注意的是：别被流量绑架，你的真本事是有人生价值的。', love:'你需要一个"懂你的笑话"的人——不只是笑，是真懂。你最怕一些一辈子"装正经但讨厌里那种人"。', social:'你是朋友圈里的"新新面包"——但你只对真正喜欢的人展示真实的自己，其他人看到的是"内容给的你"。', growth:'你习惯用幽默和包裹一切情绪，包括难过。但有些时候不需要被段子化——允许自己认真地难过，也是一种强大。' },
+    dims:{N:85,B:22,T:38,I:20}
+  },
+  'SBTI': { tag:'BOSS-掌控者', name:'裴文中', title:'险行女侠', emoji:'🎭',
+    quote:'「我从不讨好谁，包括在场的。」',
+    desc:'稳稳自动但绝不软弱、正面硬刚、懂谋知、独来独去。你不在乎控制别人的想法，但在自己的领域寸步不让。你靠自己撑起天下，不需要求助也不属于宫廷，你就是你自己的靠山，稳如泰山。',
+    analysis:'主场区 × 牛逼立 × 棋盘立 × 孤峰立——你跟"统治者"最大的区别是：统治者要的是"整体更多"，你要的是"我说的事的算数"。你是最"硬核"的独立女性模板。',
+    life: { career:'你是最好的"建设者"——不是给饼的建设者，是踏踏实实把破事做出来的人。你说到做到，别人信你。', love:'你不需要对方有钱有背景，但你需要对方有脊梁骨。你的理想伴侣是"各自强大，互相到达"。', social:'你的朋友不多，但质量最高。能进你朋友圈的人，都是被你亲自验证过的。', growth:'你太强了，强到有时候让人不敢跟你亲近。偶尔让别人帮你一次，不是求助，是信任。' },
+    dims:{N:25,B:95,T:80,I:92}
+  },
+  'SBZI': { tag:'STRONG-创赛者', name:'杨幂', title:'演令不完', emoji:'⚔️',
+    quote:'「我不需要你喜欢我，但你最好别想着害我」。',
+    desc:'找到自己的赛道、正面硬刚、跟着直觉赛走、独来独去——你是最纯粹的"战士系"人格。不靠背景不靠人设，一步一步演出来的。被万网黑的时候没有塌房，因为你根本不在乎他们说什么。',
+    analysis:'主场区 × 牛逼立 × 赌徒立 × 孤峰立——你是16种类型里最"纯粹"的一个。没有心机、没有算计、没有弯弯绕——你就是干。你是那种朋友里"最有骨骨"的人。',
+    life: { career:'你是"产出型"隐秀——你的能力完全体现在你手里的每个东西上。你不擅长也不属于职场政治，你的策略就是"用作品说话"。', love:'你在爱情里是"行动派"——不会说甜言蜜语，但会在对方需要你的时候第一个出现。你需要的伴侣是：话不多，但关键时刻从不缺席的那种。', social:'你的朋友圈是"经历型"的，一起摸过这些、一起淋过门的人，都是你的正经朋友。', growth:'你的"不在乎别人的想法"是骨气，但有时候也是墙。有些人的眼光只是想对你好。' },
+    dims:{N:20,B:95,T:30,I:92}
+  },
+  'SBTM': { tag:'PROFIT-算利者', name:'乙传沙（沙沙大女人）', title:'', emoji:'🎹',
+    quote:'「算利不是贬义词，是我对自己人的KPI。」',
+    desc:'找到自己的主场、既硬核、有清晰的策略目标、擅长组建团队和网络。你是那种目标意识最强、从不摇摆自己内心的人。你不裂清高也不玩摆烂，你就是要赢，而且要赢得漂漂白白。',
+    analysis:'主场区 × 牛逼立 × 棋盘立 × 汇方立——"算利"在你这里不是贬义词，而是一种有益的清醒。你永远知道自己要什么，并且不裂扭捏。',
+    life: { career:'你是最清醒的职场人——你永远知道自己这份工作的"交换价值"是什么。你不会在一个没有上升空间的地方浪费时间。', love:'你的择偶标准得很明确。你需要的是"一个认知零层"的对话。你的爱的哲学是：两个人在一起，应该是1+1>2。', social:'你的人脉就是你的资产。你欣赏的人是：跟你一样清醒、一样算利、一样不裂的人。', growth:'偶尔做一件"没有ROI"的事——比如帮一个帮不上你的人。你会发现，最好的投资有时候是不计划来。' },
+    dims:{N:22,B:90,T:82,I:18}
+  },
+  'SBZM': { tag:'SPRINTER-冲出者', name:'关晚', title:'超强的者', emoji:'🔥',
+    quote:'「我的眼睛就是尺，不用磁放」。',
+    desc:'找到自己的赛道、既漫天漫地、走着直觉和本能、身边永远不缺姐妹。你是那种在任何处子里都能相应的人。你不需要宝典，张嘴就是叫喊出来的。',
+    analysis:'主场区 × 牛逼立 × 赌徒立 × 汇方立——你是整个NBTI体系里"气氛"最相的类型。你走到哪里，能量就到哪里。你是"人来疯"但不是"讨好癖"。',
+    life: { career:'你的"现场感"是别人学不来的。你适合任何需要"临场反应"的工作——直播、主持、解说、销售、你不需要准备，因为你的脑子是稿子快。', love:'你在爱情里是"热风险式"的温暖——你的爱很烈、很直接、很及时。你需要一个"接得住你"的人。你的约会方式是：一起干点燃的事。', social:'你走到哪里都是社交中心，不是因为你去刻意经营，是因为你的能量自带引力。', growth:'你的"快"和"燃"是最大的武器，但也偶尔会伤人。学会给别人一点喘息的空间。' },
+    dims:{N:20,B:85,T:30,I:20}
+  },
+  'SRTI': { tag:'HERMIT-隐士者', name:'张离粒', title:'孤绝棋女', emoji:'✏️',
+    quote:'「出发要趁早，来得太晚的话，快乐也不那么快乐」。',
+    desc:'找到自己的精神领域、用文字成文字、每一个字都是精密计算、享受有益的孤独。你是那种不需要观众也能演完全场的人。你的刀不是无情，是看得太重。',
+    analysis:'主场区 × 流水立 × 棋盘立 × 孤峰立——你是整个NBTI体系里"存在密度"最高的类型。你的世界不大，但非常深。你的思维模式有缺憾，你渴望深度连接，但你又害怕失去自我。',
+    life: { career:'你不适合任何需要"迎合别人胃口"的工作。你需要完全属于自己的时间和空间去创造。你的作品有一个共特质，刀、但精力让人折服且共鸣。', love:'你是最难爱的那种人——你需要的东西太稀有，一个既给你空间又能走进你内心的人。你需要的不是陪伴，是一种"安全的依靠"。', social:'你的社交点数少，但是每一段关系都有深度。你的朋友要么不知道你在想什么，要么是谁都了解你——没有中间状态。', growth:'你太擅长"一个人"了。试试让一个人走近一点，你可能会发现——孤独没有你想的那么长。' },
+    dims:{N:15,B:20,T:78,I:95}
+  },
+  'SRZI': { tag:'WANDERER-漫游者', name:'乌鸟', title:'自由行者', emoji:'🌊',
+    quote:'「我来不及认的少年，只好认的老去」。',
+    desc:'不控制、温暖、走着直觉行事、享受独处——你是最自由的灵魂。你不跟这个世界辩岁，因为你根本就不在这个赛道上。你的牛鹿之处在于：当所有人在卷的时候，你已经在某个片刻创作了。',
+    analysis:'主场区 × 流水立 × 赌徒立 × 孤峰立——你是16种类型里最"自由"的一个。你不需要精密计算，因为你根本不care结果——过程就是目的。',
+    life: { career:'你不适合任何有"KPI"的工作。给你自由，你能创造出让人服气的东西，把你关在格子间里，你会比蜗。你适合自由职业、创作类、或者任何"用生活本身赚钱"的事。', love:'你是最浪漫又最危险的情人——你来的时候如一阵风，给人带来整个天来，走的时候也如一阵风。你需要一个"不试图定住你"的人。', social:'你在每一个地方都能交到朋友，但你在每一个地方都不会留。你的朋友散布在全世界角落。', growth:'自由是你的信仰，但"看一天"有时候也是一种束缚。有些根，是为了更深地自由。' },
+    dims:{N:10,B:15,T:25,I:95}
+  },
+  'SRTM': { tag:'SPEAKER-机智者', name:'鲁豫', title:'优雅建筑帅', emoji:'🎤',
+    quote:'「真正的自在人，是让所有人都觉得自己也是自在的那个」。',
+    desc:'找到自己的赛入、从不跟人正面冲突、埋线布局数亿年、人脉网络深不见底。你是那种看起来永远从容上来一起，实际上是谁都清楚一下一步的人。',
+    analysis:'主场区 × 流水立 × 棋盘立 × 汇方立——你是"时间的玩家"和人格，也是16种类型里最有"向心"的人。你的机智不是那种隐蕴是露的自我，而是一种让所有人都觉得被理解的暗扣。你最大的天赋是，你能让每一个出现在你对面的人都觉得"被视觉了"。',
+    life: { career:'你的职业路径是"等好局"——别人在一条道路就卷完了，你可能在最后才真正进入黄金期。但你的黄金期是别人长得多。你最大的护城河是时间——别人模仿不了你积累那二十年。', love:'你在爱情里是"细水长流式"——你追求的是十年后还能在一起聊天的踏实。你对伴侣的核心要求是"能对话"。你最怕的不是离异，是无话可说的人。', social:'你是最好的"倾听者"和"连接者"。你在每一个饭局里看起来最不抢，但离开后所有人都觉得"她好上害"。', growth:'你太擅长"让别人感受"了，有时候会忘了让自己感受。你有资格要求，有资格辩论，有资格说"这次轮到你听我说"。' },
+    dims:{N:20,B:18,T:85,I:15}
+  },
+  'SRZM': { tag:'JOKER-辣辣者', name:'翻面', title:'辣辣大女主', emoji:'🎬',
+    quote:'「姐不裂，姐也不事，姐就是那风中一棵树，你忍不了」。',
+    desc:'稳稳的自己、温暖但对准人、靠直觉和本能行事、疼痛身边的人——你是最有烟火气的"自圆自己"。二十年前你是最靓的趋模，二十年后你还是最靓的那个人——因为你从来没变过。你的辣辣不是表皮，是骨子里有那种"做在里就是这样"的放弃感。',
+    analysis:'主场区 × 流水立 × 赌徒立 × 汇方立——你是整个NBTI体系里最"去标签化"的存在。你的秘密武器是"真实"——在这个所有人都在演的世界里，你的不演就是最大的杀伤力。',
+    life: { career:'你不适合"刷"的环境。你的事业路径是"做自己→被看见→被欢迎"，跳过了所有中间的算计和包裝。你适合做自己喜欢的事然后让它自然发酵。', love:'你需要的很简单，一个跟你一样的自己、一样放弃、一样不裂的人。你不在乎对方的头衔和款式，你在乎的是"跟这个人在一起有没有很轻松"。', social:'你是所有人都想当朋友的那种人——因为跟你在一起没有任何负担。你的朋友什么人都有，你不挑人。', growth:'你的"不事"是放弃，但有时候也会被误读"好欺负"。偶尔亮一亮齿，别人搞知你的温暖是选择，不是无能。' },
+    dims:{N:12,B:15,T:28,I:12}
+  },
+};
+
+// ========== STATE ==========
+let answers = {};
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+let shuffled = [];
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function buildQuestions() {
+  shuffled = shuffle(questions).map(q => ({
+    ...q, options: Math.random() > 0.5 ? [...q.options].reverse() : q.options
+  }));
+  const list = document.getElementById('questionList');
+  list.innerHTML = shuffled.map((q, i) => `
+    <div class="question">
+      <div class="question-meta">
+        <span>Q${i+1}</span>
+        <span class="badge">${q.label}</span>
+      </div>
+      <div class="question-title">${q.text}</div>
+      <div class="options">
+        ${q.options.map((o, j) => `
+          <label class="option" id="opt-${i}-${j}">
+            <input type="radio" name="q${i}" value="${o.score}" onchange="selectOption(${i},${j},'${o.score}')">
+            <span>${o.text}</span>
+          </label>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+  updateProgress();
+}
+
+function selectOption(qi, oi, score) {
+  answers[qi] = score;
+  shuffled[qi].options.forEach((_, j) => {
+    document.getElementById(`opt-${qi}-${j}`).classList.toggle('selected', j === oi);
+  });
+  updateProgress();
+}
+
+function updateProgress() {
+  const total = shuffled.length;
+  const done = Object.keys(answers).length;
+  document.getElementById('progressBar').style.width = (done / total * 100) + '%';
+  document.getElementById('progressText').textContent = `${done} / ${total}`;
+  document.getElementById('submitBtn').disabled = done < total;
+}
+
+function getType() {
+  const s = { N:0,S:0,B:0,R:0,T:0,Z:0,I:0,M:0 };
+  Object.values(answers).forEach(v => { if (v !== 'X') s[v]++; });
+  return (s.N>=s.S?'N':'S') + (s.B>=s.R?'B':'R') + (s.T>=s.Z?'T':'Z') + (s.I>=s.M?'I':'M');
+}
+
+function showResult() {
+  const type = getType();
+  const r = results[type];
+  if (!r) return;
+
+  document.getElementById('rTag').textContent = r.tag;
+  document.getElementById('rCode').textContent = type;
+  document.getElementById('rQuote').textContent = r.quote;
+
+  const charTitle = r.title ? `代表人物 · ${r.name} · ${r.title} ${r.emoji}` : `代表人物 · ${r.name} ${r.emoji}`;
+  document.getElementById('rCharTitle').textContent = charTitle;
+  document.getElementById('rCharDesc').textContent = r.desc;
+  document.getElementById('rAnalysis').textContent = r.analysis;
+
+  const dimDisplay = [
+    { key: type[0], pct: r.dims.N },
+    { key: type[1], pct: r.dims.B },
+    { key: type[2], pct: r.dims.T },
+    { key: type[3], pct: r.dims.I },
+  ];
+
+  document.getElementById('dimGrid').innerHTML = dimDisplay.map(d => `
+    <div class="dim-pill">
+      <div class="label">${dimLabels[d.key].axis} · ${dimLabels[d.key].name}</div>
+      <div class="value">${d.pct}%</div>
+      <div class="bar"><div class="bar-fill" style="width:0%" data-pct="${d.pct}"></div></div>
+    </div>
+  `).join('');
+
+  const lifeLabels = { career:'💼 事业', love:'💗 爱情', social:'🧭 社交', growth:'✈️ 成长提醒' };
+  document.getElementById('lifeDims').innerHTML = Object.entries(r.life).map(([k,v]) => `
+    <div class="life-dim">
+      <div class="life-dim-title">${lifeLabels[k]}</div>
+      <p>${v}</p>
+    </div>
+  `).join('');
+
+  showScreen('result');
+  setTimeout(() => {
+    document.querySelectorAll('.bar-fill').forEach(el => { el.style.width = el.dataset.pct + '%'; });
+  }, 200);
+}
+
+document.getElementById('startBtn').onclick = () => { answers = {}; buildQuestions(); showScreen('test'); };
+document.getElementById('backIntroBtn').onclick = () => showScreen('intro');
+document.getElementById('submitBtn').onclick = showResult;
+document.getElementById('restartBtn').onclick = () => { answers = {}; buildQuestions(); showScreen('test'); };
+document.getElementById('toTopBtn').onclick = () => showScreen('intro');
+</script>
+</body>
+</html>
