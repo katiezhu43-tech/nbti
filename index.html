@@ -155,44 +155,46 @@ button:disabled { cursor: not-allowed; opacity: 0.55; transform: none; }
 .hint { color: var(--muted); font-size: 13px; line-height: 1.7; }
 
 /* RESULT */
-.result-wrap { margin-top: 22px; padding: 22px; }
-.result-layout { display: grid; gap: 18px; }
+.result-wrap { margin-top: 14px; padding: 14px; }
+.result-layout { display: grid; gap: 10px; }
 .r-box {
   border: 1px solid var(--line); border-radius: 18px;
-  padding: 20px; background: linear-gradient(180deg, #fff, #fffbfb);
+  padding: 16px; background: linear-gradient(180deg, #fff, #fffbfb);
 }
-.r-box h3 { font-size: 16px; margin-bottom: 14px; color: var(--text); }
+.r-box h3 { font-size: 16px; margin-bottom: 12px; color: var(--text); display: flex; align-items: center; gap: 8px; }
 
 /* RESULT HERO CARD */
 .r-hero {
   border: 1px solid var(--line); border-radius: var(--radius);
   background: linear-gradient(150deg, #f5eeff 0%, #fff0f5 60%, #fff8fb 100%);
-  padding: 36px 28px 32px;
+  padding: 28px 22px 24px;
   text-align: center;
 }
 .r-hero-label {
   font-size: 14px; color: var(--muted);
-  letter-spacing: 0.05em; margin-bottom: 16px;
+  letter-spacing: 0.05em; margin-bottom: 10px;
 }
 .r-hero-typename {
-  font-size: clamp(56px, 13vw, 88px);
+  font-size: clamp(52px, 12vw, 80px);
   font-weight: 900; color: var(--text);
   line-height: 1.0; letter-spacing: -0.02em;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
-.r-hero-code {
-  font-size: clamp(20px, 5vw, 28px);
-  font-weight: 800; color: var(--accent-strong);
-  letter-spacing: 0.18em; margin-bottom: 28px;
+.r-hero-engname {
+  font-size: clamp(22px, 5.5vw, 34px);
+  font-weight: 800; color: var(--muted);
+  letter-spacing: 0.1em; margin-bottom: 18px;
 }
 .r-hero-img {
-  width: 240px; height: 240px;
-  margin: 0 auto 28px;
+  width: 220px; height: 220px;
+  margin: 0 auto 16px;
+  overflow: hidden;
   display: flex; align-items: center; justify-content: center;
 }
 .r-hero-img img {
   width: 100%; height: 100%;
   object-fit: contain; display: block;
+  transform: scale(1.25);
 }
 .r-hero-img-placeholder {
   width: 100%; height: 100%;
@@ -205,6 +207,13 @@ button:disabled { cursor: not-allowed; opacity: 0.55; transform: none; }
 .r-hero-quote {
   font-size: 14px; color: #5a3a48;
   line-height: 1.85;
+}
+.type-badge {
+  display: inline-block;
+  background: var(--soft); color: var(--accent-strong);
+  border: 1px solid var(--line); border-radius: 8px;
+  padding: 1px 9px; font-size: 13px; font-weight: 700;
+  letter-spacing: 0.12em;
 }
 
 .dim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -241,11 +250,11 @@ button:disabled { cursor: not-allowed; opacity: 0.55; transform: none; }
 @media (max-width: 860px) { .result-top, .dim-grid { grid-template-columns: 1fr; } }
 @media (max-width: 600px) {
   .shell { padding: 12px 10px 40px; }
-  .test-wrap, .result-wrap { padding: 14px; }
+  .test-wrap, .result-wrap { padding: 10px; }
   .hero-minimal { padding: 32px 16px; min-height: 40vh; }
   .hero-minimal h1 { font-size: 26px; }
-  .r-hero { padding: 28px 18px 26px; }
-  .r-hero-img { width: 200px; height: 200px; }
+  .r-hero { padding: 22px 16px 20px; }
+  .r-hero-img { width: 180px; height: 180px; }
   .question { padding: 14px; }
   .option { padding: 12px; gap: 10px; }
   .btn-primary, .btn-secondary { padding: 13px 18px; font-size: 14px; }
@@ -304,7 +313,7 @@ button:disabled { cursor: not-allowed; opacity: 0.55; transform: none; }
       <div class="r-hero">
         <div class="r-hero-label">你的人格类型是：</div>
         <div class="r-hero-typename" id="rTypeName"></div>
-        <div class="r-hero-code" id="rCode"></div>
+        <div class="r-hero-engname" id="rEngName"></div>
         <div class="r-hero-img">
           <img id="rTypeImg" src="" alt="" style="display:none" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" onload="this.style.display='block';this.nextElementSibling.style.display='none'">
           <div class="r-hero-img-placeholder" id="rImgPlaceholder">图片加载中…</div>
@@ -312,7 +321,7 @@ button:disabled { cursor: not-allowed; opacity: 0.55; transform: none; }
         <div class="r-hero-quote" id="rQuote"></div>
       </div>
       <div class="r-box">
-        <h3>四维度得分</h3>
+        <h3>四维度得分 <span class="type-badge" id="rCodeBadge"></span></h3>
         <div class="dim-grid" id="dimGrid"></div>
       </div>
       <div class="r-box" id="rCharBox">
@@ -665,8 +674,10 @@ function showResult() {
   if (!r) return;
 
   const typeName = r.tag.replace(/^[A-Za-z]+\s*[-–]\s*/, '');
+  const engName = r.tag.split(/[-–]/)[0].trim();
   document.getElementById('rTypeName').textContent = typeName;
-  document.getElementById('rCode').textContent = type;
+  document.getElementById('rEngName').textContent = engName;
+  document.getElementById('rCodeBadge').textContent = type;
   document.getElementById('rQuote').textContent = r.quote;
   const img = document.getElementById('rTypeImg');
   const placeholder = document.getElementById('rImgPlaceholder');
