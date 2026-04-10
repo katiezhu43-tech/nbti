@@ -315,7 +315,7 @@ const questions = [
     {text:'奈之不干，他们都不急来我也不急',score:'X'},
     {text:'做好自己的部分，相信团队最终能奏效',score:'S'}
   ]},
-  { dim:'NS', label:'主导维度', text:'不相熟多年的男/女朋友讨论婚礼仪式，你的风格是：', options:[
+  { dim:'NS', label:'主导维度', text:'相恋多年的男/女朋友讨论婚礼仪式，你的风格是：', options:[
     {text:'从餐厅到座位到节目，全部亲来安排',score:'N'},
     {text:'全部包办，不要让我操心',score:'X'},
     {text:'定一个地点，大家来了喝个饭聊一下就行',score:'S'}
@@ -347,7 +347,7 @@ const questions = [
     {text:'不管他，继续说自己的',score:'X'},
     {text:'微笑不接话，转头用成绩碾回来',score:'R'}
   ]},
-  { dim:'BR', label:'冲突维度', text:'不相熟多年的男/女朋友讨论结婚，对方家庭提出了一个离谱的条件，你：', options:[
+  { dim:'BR', label:'冲突维度', text:'相恋多年的男/女朋友讨论结婚，对方家庭提出了一个离谱的条件，你：', options:[
     {text:'直接开杠：「这个条件是在侮辱我」',score:'B'},
     {text:'大脑空白不知道怎么办',score:'X'},
     {text:'笑着说「我想想」，后面找真正原因分析',score:'R'}
@@ -589,15 +589,12 @@ function showScreen(id) {
 }
 
 function buildQuestions() {
-  shuffled = shuffle(questions).map(q => ({
-    ...q, options: Math.random() > 0.5 ? [...q.options].reverse() : q.options
-  }));
+  shuffled = questions.map(q => ({ ...q }));
   const list = document.getElementById('questionList');
   list.innerHTML = shuffled.map((q, i) => `
     <div class="question">
       <div class="question-meta">
         <span>Q${i+1}</span>
-        <span class="badge">${q.label}</span>
       </div>
       <div class="question-title">${q.text}</div>
       <div class="options">
